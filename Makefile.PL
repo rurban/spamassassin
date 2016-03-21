@@ -1098,6 +1098,19 @@ qmail/qmail-spamc$(EXE_EXT): spamc/qmail-spamc$(EXE_EXT)
 	$(MAKE_SPAMC_OLD)
 	$(CHMOD) $(PERM_RWX) $@
 
+  EOD
+
+  my @exe_files = qw(sa-awl sa-compile sa-learn spamd/spamd spamassassin sa-update sa-check_spamd);
+  $code .= "compile: ";
+  $code .= " $_.exe" for @exe_files;
+  $code .= "\n\n";
+  for my $e (@exe_files) {
+    my $opt = $^O eq 'darwin' ? '' : '--staticxs';
+    $code .= "$e.exe: $e\n\tperlcc -v3 -O3 -T $opt -o \$\@ \$<\n\n";
+  }
+
+  $code .= <<'  EOD';
+
 # needs to be added to MY::install if used
 #bin__install: $(INST_SCRIPT)/sa-filter
 #        # $(RM_F) $(B_SCRIPTDIR)/spamassassin
