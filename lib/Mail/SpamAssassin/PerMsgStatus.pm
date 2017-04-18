@@ -899,7 +899,7 @@ sub get_content_preview {
 
   # in case the last line was huge, trim it back to around 200 chars
   local $1;
-  $str =~ s/^(.{200}).+$/$1 [...]/gm;
+  $str =~ s/^(.{200,}).+$/$1 [...]/gm;
   chomp ($str); $str .= "\n";
 
   # now, some tidy-ups that make things look a bit prettier
